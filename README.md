@@ -44,8 +44,8 @@ http_requests_total{code="200",handler="graph",instance="localhost:9090",job="pr
 查询所有http_requests_total时间序列中满足标签instance为localhost:9090的时间序列:  
 http_requests_total{instance="localhost:9090"}		反之排除:http_requests_total{instance!="localhost:9090"}  
 
-> 3.正则: 匹配是label=~regx  反之排除使用 label!~regx  
-http_requests_total{environment=~"staging|testing|development",method!="GET"}  
+> 3.正则: 匹配是label='~'regx  反之排除使用 label!'~'regx  
+http_requests_total{environment='~'"staging|testing|development",method!="GET"}  
 
 > 4.范围查询:  
 -时间范围查询:  
@@ -159,11 +159,11 @@ irate取的是在指定时间范围内的最近两个数据点来算速率，而
 -clamp_min(v instant-vector)  
 解释:输入一个瞬时向量和最大值，样本数据值小于min，则改为min。否则不变   <br>  
 -day_of_month(v=vector(time()) instant-vector)  
-解释:返回被给定UTC时间所在月的第几天。返回值范围：1~31。   <br>  
+解释:返回被给定UTC时间所在月的第几天。返回值范围：1-31。 <br>  
 -day_of_week(v=vector(time()) instant-vector)  
-解释:返回被给定UTC时间所在周的第几天。返回值范围：0~6. 0表示星期天   <br>  
+解释:返回被给定UTC时间所在周的第几天。返回值范围：0-6. 0表示星期天   <br>  
 -days_in_month(v=vector(time()) instant-vector)  
-解释:返回当月一共有多少天。返回值范围：28~31   <br>  
+解释:返回当月一共有多少天。返回值范围：28-31   <br>  
 -delta(v range-vector)  
 解释:计算一个范围向量v的第一个元素和最后一个元素之间的差值  
 例如:delta(cpu_temp_celsius{host="zeus"}[2h])	返回过去两小时的CPU温度差   <br>  
@@ -178,7 +178,7 @@ irate取的是在指定时间范围内的最近两个数据点来算速率，而
 -holt_winters(v range-vector, sf scalar, tf scalar)  
 解释:基于范围向量v，生成事件序列数据平滑值。平滑因子sf越低, 对老数据越重要。趋势因子tf越高，越多的数据趋势应该被重视。0< sf, tf <=1。 holt_winters仅用于gauges   <br>  
 -hour(v=vector(time()) instant-vector)  
-解释:返回被给定UTC时间的当前第几个小时，时间范围：0~23。   <br>  
+解释:返回被给定UTC时间的当前第几个小时，时间范围：0-23。   <br>  
 -idelta(v range-vector)  
 解释:输入一个范围向量，返回key: value = 度量指标： 每最后两个样本值差值。  <br>    
 -label_join(v instant-vector, dst_label string, separator string, src_label_1 string, src_label_2 string, ...)   <br>  
@@ -190,9 +190,9 @@ irate取的是在指定时间范围内的最近两个数据点来算速率，而
 -log10(v instant-vector)  
 解释:计算瞬时向量v中所有样本数据的10进制对数。相当于ln()    <br>  
 -minute(v=vector(time()) instant-vector)  
-解释:返回给定UTC时间当前小时的第多少分钟。结果范围：0~59。   <br>  
+解释:返回给定UTC时间当前小时的第多少分钟。结果范围：0-59。   <br>  
 -month(v=vector(time()) instant-vector)  
-解释:返回给定UTC时间当前属于第几个月，结果范围：0~12。   <br>  
+解释:返回给定UTC时间当前属于第几个月，结果范围：0-12。   <br>  
 -predict_linear(v range-vector, t scalar)  
 解释:预测函数,输入范围向量和从现在起t秒; 输出不带有度量指标,只有标签列表的结果值  
 例如:predict_linear(http_requests_total{code="200",instance="120.77.65.193:9090",job="prometheus",method="get"}[5m], 5)   <br>  
