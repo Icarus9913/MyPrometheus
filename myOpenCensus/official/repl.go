@@ -26,7 +26,7 @@ var (
 	MLineLengths = stats.Int64("repl/line_lengths", "The distribution of line lengths", "By")
 )
 
-//Create Tags
+//Create Tags	简简单单加了一个标签而已,需要提前在view里注册,配合ctx使用
 var (
 	KeyMethod, _ = tag.NewKey("method")
 	KeyStatus, _ = tag.NewKey("status")
@@ -35,7 +35,7 @@ var (
 
 //Create Views
 var (
-	LatencyView = &view.View{			//延迟
+	LatencyView = &view.View{			//延迟, histogram
 		Name:        "demo/latency",
 		Measure:     MLatencyMs,
 		Description: "The distribution of the latncies",
@@ -43,16 +43,17 @@ var (
 		//Latency in buckets:
 		// [>=0ms, >=25ms, >=50ms, >=75ms, >=100ms, >=200ms, >=400ms, >=600ms, >=800ms, >=1s, >=2s, >=4s, >=6s]
 		Aggregation: view.Distribution(0, 25, 50, 75, 100, 200, 400, 600, 800, 1000, 2000, 4000, 6000),
-		TagKeys:     []tag.Key{KeyMethod}}
+		TagKeys:     []tag.Key{KeyMethod}}		//latency注册了这个KeyMethod的tag
 
-	LineCountView = &view.View{			//句子长度
+	LineCountView = &view.View{			//终端输入的次数, count
 		Name:        "demo/lines_in",
 		Measure:     MLineLengths,
 		Description: "The number of lines from standard input",
 		Aggregation: view.Count(),
+		TagKeys: []tag.Key{KeyStatus},		//lineCount注册了KeyStatus的tag
 	}
 
-	LineLengthView = &view.View{
+	LineLengthView = &view.View{	// histogram, 其下层有count,sum和bucket数据的记录
 		Name:        "demo/line_lengths",
 		Description: "Groups the lengths of keys in buckets",
 		Measure:     MLineLengths,
