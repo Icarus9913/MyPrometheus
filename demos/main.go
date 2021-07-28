@@ -1,10 +1,10 @@
 package main
 
 import (
+	"MySimpleDemos/myPrometheus/demos/tool"
 	"context"
 	"log"
 	"net/http"
-	"simplePrometheus/demos/tool"
 
 	"contrib.go.opencensus.io/exporter/prometheus"
 	"go.opencensus.io/stats"

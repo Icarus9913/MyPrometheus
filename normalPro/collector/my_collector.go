@@ -1,9 +1,10 @@
 package collector
 
 import (
-	"github.com/prometheus/client_golang/prometheus"
 	"math/rand"
 	"sync"
+
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 /*

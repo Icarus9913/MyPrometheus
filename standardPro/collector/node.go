@@ -1,12 +1,12 @@
 package collector
 
 import (
+	"runtime"
+	"sync"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
-	"runtime"
-
-	"sync"
 )
 
 /*
@@ -20,7 +20,7 @@ type NodeCollector struct {
 	requestDesc    *prometheus.Desc //counter
 	nodeMetrics    nodeStatsMetrics //混合方式
 	goroutinesDesc *prometheus.Desc //gauge
-	threadsDesc     *prometheus.Desc //Gauge
+	threadsDesc    *prometheus.Desc //Gauge
 	summaryDesc    *prometheus.Desc //summary
 	histogramDesc  *prometheus.Desc //histogram
 	mutex          sync.Mutex
@@ -28,8 +28,8 @@ type NodeCollector struct {
 
 //混合方式数据结构
 type nodeStatsMetrics []struct {
-	desc *prometheus.Desc
-	eval func(*mem.VirtualMemoryStat) float64
+	desc    *prometheus.Desc
+	eval    func(*mem.VirtualMemoryStat) float64
 	valType prometheus.ValueType
 }
 
@@ -50,7 +50,7 @@ func (n NodeCollector) Describe(ch chan<- *prometheus.Desc) {
 //实现采集器Collect接口,真正采集动作
 func (n NodeCollector) Collect(ch chan<- prometheus.Metric) {
 	n.mutex.Lock()
-	ch <- prometheus.MustNewConstMetric(n.requestDesc,prometheus.CounterValue,0,hostname)
+	ch <- prometheus.MustNewConstMetric(n.requestDesc, prometheus.CounterValue, 0, hostname)
 	vm, _ := mem.VirtualMemory()
 	for _, metric := range n.nodeMetrics {
 		ch <- prometheus.MustNewConstMetric(metric.desc, metric.valType, metric.eval(vm))
@@ -76,18 +76,19 @@ func (n NodeCollector) Collect(ch chan<- prometheus.Metric) {
 		map[float64]uint64{25: 121, 50: 2403, 100: 3221, 200: 4233},
 		"200", "get",
 	)
-	n.mutex.Unlock()}
+	n.mutex.Unlock()
+}
 
 //初始化采集器
 func NewNodeCollector() prometheus.Collector {
-	host,_:= host.Info()
+	host, _ := host.Info()
 	hostname = host.Hostname
 	return &NodeCollector{
 		requestDesc: prometheus.NewDesc(
 			"total_request_count",
 			"请求数",
 			[]string{"DYNAMIC_HOST_NAME"}, //动态标签名称
-			prometheus.Labels{"STATIC_LABEL1":"静态值可以放在这里","HOST_NAME":hostname}),
+			prometheus.Labels{"STATIC_LABEL1": "静态值可以放在这里", "HOST_NAME": hostname}),
 		nodeMetrics: nodeStatsMetrics{
 			{
 				desc: prometheus.NewDesc(
@@ -95,7 +96,7 @@ func NewNodeCollector() prometheus.Collector {
 					"内存总量",
 					nil, nil),
 				valType: prometheus.GaugeValue,
-				eval: func(ms *mem.VirtualMemoryStat) float64 { return float64(ms.Total) / 1e9 },
+				eval:    func(ms *mem.VirtualMemoryStat) float64 { return float64(ms.Total) / 1e9 },
 			},
 			{
 				desc: prometheus.NewDesc(
@@ -103,11 +104,10 @@ func NewNodeCollector() prometheus.Collector {
 					"内存空闲",
 					nil, nil),
 				valType: prometheus.GaugeValue,
-				eval: func(ms *mem.VirtualMemoryStat) float64 { return float64(ms.Free) / 1e9 },
+				eval:    func(ms *mem.VirtualMemoryStat) float64 { return float64(ms.Free) / 1e9 },
 			},
-
 		},
-		goroutinesDesc:prometheus.NewDesc(
+		goroutinesDesc: prometheus.NewDesc(
 			"goroutines_num",
 			"协程数.",
 			nil, nil),

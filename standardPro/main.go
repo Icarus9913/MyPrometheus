@@ -1,21 +1,22 @@
 package main
 
 import (
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"MySimpleDemos/myPrometheus/standardPro/collector"
 	"log"
 	"net/http"
-	"simplePrometheus/complex/collector"
+
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-func init()  {
+func init() {
 	//注册自身采集器
 	prometheus.MustRegister(collector.NewNodeCollector())
 	//MustRegister(NewProcessCollector(ProcessCollectorOpts{}))
 	//MustRegister(NewGoCollector())
 }
 
-func main()  {
+func main() {
 	http.Handle("/metrics", promhttp.Handler())
-	log.Fatal(http.ListenAndServe(":8989",nil))
+	log.Fatal(http.ListenAndServe(":8989", nil))
 }

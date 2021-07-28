@@ -1,12 +1,13 @@
 package main
 
 import (
+	"MySimpleDemos/myPrometheus/normalPro/collector"
 	"flag"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net/http"
-	"simplePrometheus/cloneFromGit/collector"
+
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var (

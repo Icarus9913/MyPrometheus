@@ -2,9 +2,10 @@ package main
 
 import (
 	"flag"
+	"net/http"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"net/http"
 )
 
 var addr = flag.String("listen-address", ":9001", "The address to listen on for HTTP requests.")
