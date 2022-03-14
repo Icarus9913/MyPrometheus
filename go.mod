@@ -4,9 +4,11 @@ go 1.16
 
 require (
 	contrib.go.opencensus.io/exporter/ocagent v0.7.0
-	contrib.go.opencensus.io/exporter/prometheus v0.2.0
-	github.com/prometheus/client_golang v1.9.0
-	github.com/shirou/gopsutil v0.0.0-20190731134726-d80c43f9c984
-	go.opencensus.io v0.22.3
+	contrib.go.opencensus.io/exporter/prometheus v0.4.0
+	github.com/prometheus/client_golang v1.12.1
+	github.com/shirou/gopsutil v3.21.11+incompatible
+	github.com/tklauser/go-sysconf v0.3.10 // indirect
+	github.com/yusufpapurcu/wmi v1.2.2 // indirect
+	go.opencensus.io v0.23.0
 
 )
