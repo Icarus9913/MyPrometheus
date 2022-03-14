@@ -9,8 +9,8 @@
 >   
 > 3. write是得到的最终结果(histogram的最终结果bucket的计数是向下包含的,如最下面的是2,倒数第二个是2+3=5,最上面那个是2+3+1=6):  
 > &nbsp;&nbsp;[basename]_bucket{le=“1”} = 2  
-> &nbsp;&nbsp;[basename]_bucket{le=“5”} =3  
-> &nbsp;&nbsp;[basename]_bucket{le=“10”} =6  
+> &nbsp;&nbsp;[basename]_bucket{le=“5”} = 5  
+> &nbsp;&nbsp;[basename]_bucket{le=“10”} = 6  
 > &nbsp;&nbsp;[basename]_bucket{le="+Inf"} = 6  
 > &nbsp;&nbsp;[basename]_count =6  
 > &nbsp;&nbsp;[basename]_sum =18.8378745    
